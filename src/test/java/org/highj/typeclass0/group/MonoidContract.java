@@ -24,7 +24,7 @@ public interface MonoidContract<T> extends SemigroupContract<T> {
         assertThat(result).isEqualTo(a);
     }
 
-    @Property
+    //TODO investigate @Property
     default void fold(java.util.List<T> values) {
         Monoid<T> monoid = subject();
         List<T> as = List.fromJavaList(values);
