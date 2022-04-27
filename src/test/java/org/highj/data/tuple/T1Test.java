@@ -47,15 +47,6 @@ public class T1Test {
     }
 
     @Test
-    public void narrow() {
-        __<T1.µ, Integer> fortyTwo = T1.of(42);
-        assertThat(asT1(fortyTwo)._1()).isEqualTo(42);
-        //lazy version
-        __<T1.µ, String> hello = T1.of$(() -> "hello");
-        assertThat(asT1(hello)._1());
-    }
-
-    @Test
     public void testToString() {
         T1<Integer> fortyTwo = T1.of(42);
         assertThat(fortyTwo.toString()).isEqualTo("(42)");

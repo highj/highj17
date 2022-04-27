@@ -50,7 +50,7 @@ public interface Bifoldable<P> {
 
     default <A, B, C> C bifoldr(BiFunction<A, C, C> fn1, BiFunction<B, C, C> fn2, C start, __2<P, A, B> nestedAB) {
         return bifoldMap(Functions.endoMonoid(),
-                a -> (Function<C, C>) c -> fn1.apply(a, c),
+                a -> c -> fn1.apply(a, c),
                 b -> (Function<C, C>) c -> fn2.apply(b, c),
                 nestedAB
         ).apply(start);

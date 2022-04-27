@@ -12,14 +12,14 @@ import org.highj.data.tuple.T2;
 public interface Gen2<F> {
     <T, U> Gen<__2<F, T, U>> gen(Gen<T> gen1, Gen<U> gen2);
 
-    Gen2<T2.µ> t2Gen2 = new Gen2<T2.µ>() {
+    Gen2<T2.µ> t2Gen2 = new Gen2<>() {
         @Override
         public <T, U> Gen<__2<T2.µ, T, U>> gen(Gen<T> gen1, Gen<U> gen2) {
             return Gen.zip(gen1, gen2).map(t2 -> t2);
         }
     };
 
-    Gen2<Either.µ> eitherGen2 = new Gen2<Either.µ>() {
+    Gen2<Either.µ> eitherGen2 = new Gen2<>() {
         @Override
         public <T, U> Gen<__2<Either.µ, T, U>> gen(Gen<T> gen1, Gen<U> gen2) {
             return Gen.zip(gen1, gen2).map(

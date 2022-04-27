@@ -26,7 +26,7 @@ public interface Injective1<F, G> extends NF<F, G> {
     }
 
     default <H> Injective1<F, H> andThen(Injective1<G, H> that) {
-        return new Injective1<F, H>() {
+        return new Injective1<>() {
             @Override
             public <A> __<H, A> to(__<F, A> input) {
                 return that.to(Injective1.this.to(input));
@@ -35,7 +35,7 @@ public interface Injective1<F, G> extends NF<F, G> {
     }
 
     static <M> Injective1<M, M> identity() {
-        return new Injective1<M, M>() {
+        return new Injective1<>() {
             @Override
             public <A> __<M, A> to(__<M, A> input) {
                 return input;

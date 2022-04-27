@@ -9,6 +9,6 @@ public interface Plus<F> extends Alt<F> {
     <A> __<F, A> mzero();
 
     default <A> Monoid<__<F, A>> asMonoid() {
-        return Monoid.create(mzero(), this::mplus);
+        return Monoid.create(mzero(), (a,b) -> mplus(a,b));
     }
 }

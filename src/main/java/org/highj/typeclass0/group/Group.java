@@ -18,7 +18,7 @@ public interface Group<A> extends Monoid<A> {
     }
 
     static <A> Group<A> create(A identity, BinaryOperator<A> fn, UnaryOperator<A> inv) {
-        return new Group<A>() {
+        return new Group<>() {
             @Override
             public A inverse(A a) {
                 return inv.apply(a);

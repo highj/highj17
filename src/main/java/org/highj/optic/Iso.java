@@ -5,7 +5,10 @@ import java.util.function.Function;
 import org.highj.hkt.__;
 import org.highj.hkt.__2;
 import org.highj.data.tuple.T2;
+import org.highj.optic.instance.IsoCategory;
 import org.highj.typeclass2.arrow.Category;
+
+import static org.highj.Hkt.asIso;
 
 /** {@link PIso} when S = T and A = B */
 public final class Iso<S, A> extends PIso<S, S, A, A> implements __2<Iso.µ, S, A> {
@@ -63,7 +66,7 @@ public final class Iso<S, A> extends PIso<S, S, A, A> implements __2<Iso.µ, S, 
      *  @param <C> the target type of the {@link Setter}
      *  @return the composed {@link Setter}
      */
-    public final <C> Setter<S, C> composeSetter(final Setter<A, C> other) {
+    public <C> Setter<S, C> composeSetter(final Setter<A, C> other) {
         return new Setter<>(pIso.composeSetter(other.pSetter));
     }
 
@@ -72,7 +75,7 @@ public final class Iso<S, A> extends PIso<S, S, A, A> implements __2<Iso.µ, S, 
      * @param <C> the target type of the {@link Traversal}
      * @return the composed {@link Traversal}
      */
-    public final <C> Traversal<S, C> composeTraversal(final Traversal<A, C> other) {
+    public <C> Traversal<S, C> composeTraversal(final Traversal<A, C> other) {
         return new Traversal<>(pIso.composeTraversal(other.pTraversal));
     }
 
@@ -81,7 +84,7 @@ public final class Iso<S, A> extends PIso<S, S, A, A> implements __2<Iso.µ, S, 
      * @param <C> the target type of the {@link Optional}
      * @return the composed {@link Optional}
      */
-    public final <C> Optional<S, C> composeOptional(final Optional<A, C> other) {
+    public <C> Optional<S, C> composeOptional(final Optional<A, C> other) {
         return new Optional<>(pIso.composeOptional(other.pOptional));
     }
 
@@ -90,7 +93,7 @@ public final class Iso<S, A> extends PIso<S, S, A, A> implements __2<Iso.µ, S, 
      * @param <C> the target type of the {@link Prism}
      * @return the composed {@link Prism}
      */
-    public final <C> Prism<S, C> composePrism(final Prism<A, C> other) {
+    public <C> Prism<S, C> composePrism(final Prism<A, C> other) {
         return new Prism<>(pIso.composePrism(other.pPrism));
     }
 
@@ -99,7 +102,7 @@ public final class Iso<S, A> extends PIso<S, S, A, A> implements __2<Iso.µ, S, 
      * @param <C> the target type of the {@link Lens}
      * @return the composed {@link Lens}
      */
-    public final <C> Lens<S, C> composeLens(final Lens<A, C> other) {
+    public <C> Lens<S, C> composeLens(final Lens<A, C> other) {
         return asLens().composeLens(other);
     }
 
@@ -108,7 +111,7 @@ public final class Iso<S, A> extends PIso<S, S, A, A> implements __2<Iso.µ, S, 
      * @param <C> the target type of the second {@link Iso}
      * @return the composed {@link Iso}
      */
-    public final <C> Iso<S, C> composeIso(final Iso<A, C> other) {
+    public <C> Iso<S, C> composeIso(final Iso<A, C> other) {
         return new Iso<>(pIso.composeIso(other.pIso));
     }
 
@@ -120,7 +123,7 @@ public final class Iso<S, A> extends PIso<S, S, A, A> implements __2<Iso.µ, S, 
      * @return the {@link Setter}
      */
     @Override
-    public final Setter<S, A> asSetter() {
+    public Setter<S, A> asSetter() {
         return new Setter<>(pIso.asSetter());
     }
 
@@ -128,7 +131,7 @@ public final class Iso<S, A> extends PIso<S, S, A, A> implements __2<Iso.µ, S, 
      * @return the {@link Traversal}
      */
     @Override
-    public final Traversal<S, A> asTraversal() {
+    public Traversal<S, A> asTraversal() {
         return new Traversal<>(pIso.asTraversal());
     }
 
@@ -136,7 +139,7 @@ public final class Iso<S, A> extends PIso<S, S, A, A> implements __2<Iso.µ, S, 
      * @return the {@link Optional}
      */
     @Override
-    public final Optional<S, A> asOptional() {
+    public Optional<S, A> asOptional() {
         return new Optional<>(pIso.asOptional());
     }
 
@@ -144,7 +147,7 @@ public final class Iso<S, A> extends PIso<S, S, A, A> implements __2<Iso.µ, S, 
      * @return the {@link Prism}
      */
     @Override
-    public final Prism<S, A> asPrism() {
+    public Prism<S, A> asPrism() {
         return new Prism<>(pIso.asPrism());
     }
 
@@ -152,13 +155,8 @@ public final class Iso<S, A> extends PIso<S, S, A, A> implements __2<Iso.µ, S, 
      * @return the {@link Lens}
      */
     @Override
-    public final Lens<S, A> asLens() {
+    public Lens<S, A> asLens() {
         return new Lens<>(pIso.asLens());
-    }
-
-    @SuppressWarnings({ "rawtypes", "unchecked" })
-    public static <S, A> Iso<S, A> narrow(final __<__<µ, S>, A> value) {
-        return (Iso) value;
     }
 
     /** Create an {@link Iso} using a pair of functions: one to get the target and one to get the source.
@@ -190,16 +188,5 @@ public final class Iso<S, A> extends PIso<S, S, A, A> implements __2<Iso.µ, S, 
         return new Iso<>(PIso.pId());
     }
 
-    public static final Category<Iso.µ> isoCategory = new Category<Iso.µ>() {
-
-        @Override
-        public <B, C, D> __2<µ, B, D> dot(final __2<µ, C, D> cd, final __2<µ, B, C> bc) {
-            return narrow(bc).composeIso(narrow(cd));
-        }
-
-        @Override
-        public <B> __2<µ, B, B> identity() {
-            return id();
-        }
-    };
+    public static final Category<Iso.µ> isoCategory = new IsoCategory() { };
 }

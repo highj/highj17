@@ -12,9 +12,9 @@ public interface Arrow<A> extends Category<A> {
     <B, C, D> __2<A, T2<B, D>, T2<C, D>> first(__2<A, B, C> arrow);
 
     default <B, C, D> __2<A, T2<D, B>, T2<D, C>> second(__2<A, B, C> arrow) {
-        __2<A, T2<D, B>, T2<B, D>> swapForth = arr(T2<D, B>::swap);
+        __2<A, T2<D, B>, T2<B, D>> swapForth = arr(T2::swap);
         __2<A, T2<B, D>, T2<C, D>> arrowFirst = first(arrow);
-        __2<A, T2<C, D>, T2<D, C>> swapBack = arr(T2<C, D>::swap);
+        __2<A, T2<C, D>, T2<D, C>> swapBack = arr(T2::swap);
         return then(swapForth, arrowFirst, swapBack);
     }
 
@@ -33,7 +33,7 @@ public interface Arrow<A> extends Category<A> {
     }
 
     default <B> __2<A, B, B> returnA() {
-        return arr(Function.<B>identity());
+        return arr(Function.identity());
     }
 
     //(^>>)

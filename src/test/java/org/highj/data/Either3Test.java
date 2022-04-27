@@ -419,15 +419,6 @@ public class Either3Test {
     }
 
     @Test
-    public void narrow() {
-        Either3<Integer, String, Long> either3 = Either3.Left(42);
-        __3<Either3.µ, Integer, String, Long> either3HKT = either3;
-        assertThat(asEither3(either3HKT)).isSameAs(either3);
-        __<__<__<Either3.µ, Integer>, String>, Long> either3curried = either3;
-        assertThat(asEither3(either3curried)).isSameAs(either3curried);
-    }
-
-    @Test
     public void ord() {
         Either3Ord<Integer, String, Long> ord = Either3.ord(
             Ord.<Integer>fromComparable(),

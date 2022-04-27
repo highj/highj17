@@ -59,7 +59,7 @@ public abstract class PSetter<S, T, A, B> {
      */
     public final <C, D> PSetter<S, T, C, D> composeSetter(final PSetter<A, B, C, D> other) {
         final PSetter<S, T, A, B> self = this;
-        return new PSetter<S, T, C, D>() {
+        return new PSetter<>() {
 
             @Override
             public F1<S, T> modify(final Function<C, D> f) {
@@ -127,12 +127,12 @@ public abstract class PSetter<S, T, A, B> {
         return PIso.<S, T> pId().asSetter();
     }
 
-    public static final <S, T> PSetter<Either<S, S>, Either<T, T>, S, T> pCodiagonal() {
+    public static <S, T> PSetter<Either<S, S>, Either<T, T>, S, T> pCodiagonal() {
         return pSetter(f -> e -> e.bimap(f, f));
     }
 
-    public static final <S, T, A, B> PSetter<S, T, A, B> pSetter(final Function<Function<A, B>, F1<S, T>> modify) {
-        return new PSetter<S, T, A, B>() {
+    public static <S, T, A, B> PSetter<S, T, A, B> pSetter(final Function<Function<A, B>, F1<S, T>> modify) {
+        return new PSetter<>() {
             @Override
             public F1<S, T> modify(final Function<A, B> f) {
                 return modify.apply(f);

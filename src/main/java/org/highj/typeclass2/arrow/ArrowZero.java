@@ -13,5 +13,5 @@ import org.highj.hkt.__2;
  */
 public interface ArrowZero<A> extends Arrow<A> {
     
-    public <B,C> __2<A,B,C> zero();
+    <B,C> __2<A,B,C> zero();
 }

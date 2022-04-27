@@ -15,7 +15,7 @@ import org.highj.data.tuple.T2;
  */
 public interface ArrowWriter<W,A> extends Arrow<A> {
     
-    public __2<A,W,T0> write();
+    __2<A,W,T0> write();
     
-    public <B,C> __2<A,B,T2<C,W>> newWriter(__2<A,B,C> a);
+    <B,C> __2<A,B,T2<C,W>> newWriter(__2<A,B,C> a);
 }

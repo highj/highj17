@@ -15,5 +15,5 @@ import org.highj.hkt.__3;
  */
 public interface ArrowTransformer<F,A> extends Arrow<__<F,A>> {
     
-    public <B,C> __3<F,A,B,C> lift(__2<A,B,C> arrow);
+    <B,C> __3<F,A,B,C> lift(__2<A,B,C> arrow);
 }

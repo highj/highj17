@@ -1,19 +1,20 @@
 package org.highj.optic;
 
-import java.util.function.Function;
-
-import org.highj.hkt.__;
-import org.highj.hkt.__2;
 import org.highj.data.Either;
 import org.highj.data.List;
 import org.highj.data.Maybe;
 import org.highj.data.bool.Booleans;
+import org.highj.data.tuple.T2;
 import org.highj.function.F1;
 import org.highj.function.Functions;
-import org.highj.data.tuple.T2;
+import org.highj.hkt.__;
+import org.highj.hkt.__2;
+import org.highj.optic.instance.FoldArrowChoice;
 import org.highj.typeclass0.group.Monoid;
 import org.highj.typeclass1.foldable.Foldable;
 import org.highj.typeclass2.arrow.ArrowChoice;
+
+import java.util.function.Function;
 
 /**
  * A {@link Fold} can be seen as a {@link Getter} with many targets or a weaker {@link PTraversal} which cannot modify its
@@ -100,7 +101,7 @@ public abstract class Fold<S, A> implements __2<Fold.µ, S, A> {
      * @return the combined {@link Fold}
      */
     public final <S1> Fold<Either<S, S1>, A> sum(final Fold<S1, A> other) {
-        return new Fold<Either<S, S1>, A>() {
+        return new Fold<>() {
             @Override
             public <B> F1<Either<S, S1>, B> foldMap(final Monoid<B> m, final Function<A, B> f) {
                 return s -> s.either(Fold.this.foldMap(m, f), other.foldMap(m, f));
@@ -109,7 +110,7 @@ public abstract class Fold<S, A> implements __2<Fold.µ, S, A> {
     }
 
     public final <B> Fold<T2<S, B>, T2<A, B>> first() {
-        return new Fold<T2<S, B>, T2<A, B>>() {
+        return new Fold<>() {
             @Override
             public <M> F1<T2<S, B>, M> foldMap(final Monoid<M> m, final Function<T2<A, B>, M> f) {
                 return t2 -> Fold.this.foldMap(m, a -> f.apply(T2.of(a, t2._2()))).apply(t2._1());
@@ -118,7 +119,7 @@ public abstract class Fold<S, A> implements __2<Fold.µ, S, A> {
     }
 
     public final <B> Fold<T2<B, S>, T2<B, A>> second() {
-        return new Fold<T2<B, S>, T2<B, A>>() {
+        return new Fold<>() {
             @Override
             public <M> F1<T2<B, S>, M> foldMap(final Monoid<M> m, final Function<T2<B, A>, M> f) {
                 return t2 -> Fold.this.foldMap(m, b -> f.apply(T2.of(t2._1(), b))).apply(t2._2());
@@ -127,7 +128,7 @@ public abstract class Fold<S, A> implements __2<Fold.µ, S, A> {
     }
 
     public final <B> Fold<Either<S, B>, Either<A, B>> left() {
-        return new Fold<Either<S, B>, Either<A, B>>() {
+        return new Fold<>() {
             @Override
             public <M> F1<Either<S, B>, M> foldMap(final Monoid<M> m, final Function<Either<A, B>, M> f) {
                 return e -> e.either(
@@ -140,7 +141,7 @@ public abstract class Fold<S, A> implements __2<Fold.µ, S, A> {
     }
 
     public final <B> Fold<Either<B, S>, Either<B, A>> right() {
-        return new Fold<Either<B, S>, Either<B, A>>() {
+        return new Fold<>() {
             @Override
             public <M> F1<Either<B, S>, M> foldMap(final Monoid<M> m, final Function<Either<B, A>, M> f) {
                 return e -> e.either(
@@ -161,10 +162,10 @@ public abstract class Fold<S, A> implements __2<Fold.µ, S, A> {
      * @return the composed {@link Fold}
      */
     public final <B> Fold<S, B> composeFold(final Fold<A, B> other) {
-        return new Fold<S, B>() {
+        return new Fold<>() {
             @Override
             public <C> F1<S, C> foldMap(final Monoid<C> m, final Function<B, C> f) {
-                return Fold.this.<C> foldMap(m, other.<C> foldMap(m, f));
+                return Fold.this.foldMap(m, other.foldMap(m, f));
             }
         };
     }
@@ -222,17 +223,12 @@ public abstract class Fold<S, A> implements __2<Fold.µ, S, A> {
         return composeFold(other.asFold());
     }
 
-    @SuppressWarnings({ "rawtypes", "unchecked" })
-    public static <S, A> Fold<S, A> narrow(final __<__<µ, S>, A> value) {
-        return (Fold) value;
-    }
-
     public static <A> Fold<A, A> id() {
         return PIso.<A, A> pId().asFold();
     }
 
-    public static final <A> Fold<Either<A, A>, A> codiagonal() {
-        return new Fold<Either<A, A>, A>() {
+    public static <A> Fold<Either<A, A>, A> codiagonal() {
+        return new Fold<>() {
             @Override
             public <B> F1<Either<A, A>, B> foldMap(final Monoid<B> m, final Function<A, B> f) {
                 return e -> e.either(f, f);
@@ -241,7 +237,7 @@ public abstract class Fold<S, A> implements __2<Fold.µ, S, A> {
     }
 
     public static <F, A> Fold<__<F, A>, A> fromFoldable(final Foldable<F> foldable) {
-        return new Fold<__<F, A>, A>() {
+        return new Fold<>() {
             @Override
             public <M> F1<__<F, A>, M> foldMap(final Monoid<M> m, final Function<A, M> f) {
                 return fa -> foldable.foldMap(m, f, fa);
@@ -249,48 +245,5 @@ public abstract class Fold<S, A> implements __2<Fold.µ, S, A> {
         };
     }
 
-    public static final ArrowChoice<Fold.µ> foldChoice = new ArrowChoice<Fold.µ>() {
-
-        @Override
-        public <B, C, D> __2<µ, Either<B, C>, D> fanin(final __2<µ, B, D> f,
-                final __2<µ, C, D> g) {
-            return narrow(f).sum(narrow(g));
-        }
-
-        @Override
-        public <B, C, D> __2<µ, B, D> dot(final __2<µ, C, D> cd, final __2<µ, B, C> bc) {
-            return narrow(bc).composeFold(narrow(cd));
-        }
-
-        @Override
-        public <B> __2<µ, B, B> identity() {
-            return Fold.id();
-        }
-
-        @Override
-        public <B, C, D> __2<µ, T2<B, D>, T2<C, D>> first(final __2<µ, B, C> arrow) {
-            return narrow(arrow).first();
-        }
-
-        @Override
-        public <B, C, D> __2<µ, T2<D, B>, T2<D, C>> second(final __2<µ, B, C> arrow) {
-            return narrow(arrow).second();
-        }
-
-        @Override
-        public <B, C> __2<µ, B, C> arr(final Function<B, C> fn) {
-            return Getter.getter(fn).asFold();
-        }
-
-        @Override
-        public <B, C, D> __2<µ, Either<B, D>, Either<C, D>> left(final __2<µ, B, C> arrow) {
-            return narrow(arrow).left();
-        }
-
-        @Override
-        public <B, C, D> __2<µ, Either<D, B>, Either<D, C>> right(final __2<µ, B, C> arrow) {
-            return narrow(arrow).right();
-        }
-    };
-
+    public static final ArrowChoice<Fold.µ> foldChoice = new FoldArrowChoice(){};
 }

@@ -19,7 +19,7 @@ public interface MonadZero<M> extends Monad<M> {
     //mfilter (Control.Monad)
     //for MonadZero
     default <A> __<M, A> mfilter(Function<A, Boolean> condition, final __<M, A> target) {
-        return bind(map(condition, target), b -> b ? target : MonadZero.this.<A>mzero());
+        return bind(map(condition, target), b -> b ? target : MonadZero.this.mzero());
     }
 
 }

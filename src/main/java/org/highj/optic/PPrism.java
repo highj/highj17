@@ -180,7 +180,7 @@ public abstract class PPrism<S, T, A, B> {
      * @return the composed {@link PPrism}
      */
     public final <C, D> PPrism<S, T, C, D> composePrism(final PPrism<A, B, C, D> other) {
-        return new PPrism<S, T, C, D>() {
+        return new PPrism<>() {
 
             @Override
             public Either<T, C> getOrModify(final S s) {
@@ -219,7 +219,7 @@ public abstract class PPrism<S, T, A, B> {
      * @return the {@link Fold}
      */
     public final Fold<S, A> asFold() {
-        return new Fold<S, A>() {
+        return new Fold<>() {
             @Override
             public <M> F1<S, M> foldMap(final Monoid<M> monoid, final Function<A, M> f) {
                 return s -> getMaybe(s).map(f).getOrElse(monoid.identity());
@@ -231,7 +231,7 @@ public abstract class PPrism<S, T, A, B> {
      * @return the {@link PSetter}
      */
     public PSetter<S, T, A, B> asSetter() {
-        return new PSetter<S, T, A, B>() {
+        return new PSetter<>() {
             @Override
             public F1<S, T> modify(final Function<A, B> f) {
                 return PPrism.this.modify(f);
@@ -248,12 +248,11 @@ public abstract class PPrism<S, T, A, B> {
      * @return the {@link PTraversal}
      */
     public PTraversal<S, T, A, B> asTraversal() {
-        final PPrism<S, T, A, B> self = this;
-        return new PTraversal<S, T, A, B>() {
+        return new PTraversal<>() {
 
             @Override
             public <X> F1<S, __<X, T>> modifyF(final Applicative<X> applicative, final Function<A, __<X, B>> f) {
-                return self.modifyF(applicative, f);
+                return PPrism.this.modifyF(applicative, f);
             }
 
         };
@@ -263,32 +262,31 @@ public abstract class PPrism<S, T, A, B> {
      * @return the {@link POptional}
      */
     public POptional<S, T, A, B> asOptional() {
-        final PPrism<S, T, A, B> self = this;
-        return new POptional<S, T, A, B>() {
+        return new POptional<>() {
 
             @Override
             public Either<T, A> getOrModify(final S s) {
-                return self.getOrModify(s);
+                return PPrism.this.getOrModify(s);
             }
 
             @Override
             public <X> F1<S, __<X, T>> modifyF(final Applicative<X> applicative, final Function<A, __<X, B>> f) {
-                return self.modifyF(applicative, f);
+                return PPrism.this.modifyF(applicative, f);
             }
 
             @Override
             public F1<S, T> set(final B b) {
-                return self.set(b);
+                return PPrism.this.set(b);
             }
 
             @Override
             public Maybe<A> getMaybe(final S s) {
-                return self.getMaybe(s);
+                return PPrism.this.getMaybe(s);
             }
 
             @Override
             public F1<S, T> modify(final Function<A, B> f) {
-                return self.modify(f);
+                return PPrism.this.modify(f);
             }
 
         };
@@ -309,7 +307,7 @@ public abstract class PPrism<S, T, A, B> {
      */
     public static <S, T, A, B> PPrism<S, T, A, B> pPrism(final Function<S, Either<T, A>> getOrModify,
             final Function<B, T> reverseGet) {
-        return new PPrism<S, T, A, B>() {
+        return new PPrism<>() {
 
             @Override
             public Either<T, A> getOrModify(final S s) {

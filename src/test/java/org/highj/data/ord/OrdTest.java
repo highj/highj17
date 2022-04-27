@@ -142,13 +142,6 @@ public class OrdTest {
     }
 
     @Test
-    public void narrow() {
-        Ord<String> ord = Ord.fromComparable();
-        __<Ord.µ, String> hkt = ord;
-        assertThat(asOrd(hkt)).isSameAs(ord);
-    }
-
-    @Test
     public void toEq() {
         Eq<String> eq = Ord.<String>fromComparable().toEq();
         assertThat(eq.eq("a", "b")).isFalse();

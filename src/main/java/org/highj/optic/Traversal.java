@@ -31,7 +31,7 @@ public final class Traversal<S, A> extends PTraversal<S, S, A, A> implements __2
      * @param <S1> the source type of the second {@link Traversal}
      * @return the combined {@link Traversal}
      */
-    public final <S1> Traversal<Either<S, S1>, A> sum(final Traversal<S1, A> other) {
+    public <S1> Traversal<Either<S, S1>, A> sum(final Traversal<S1, A> other) {
         return new Traversal<>(pTraversal.sum(other.pTraversal));
     }
 
@@ -44,7 +44,7 @@ public final class Traversal<S, A> extends PTraversal<S, S, A, A> implements __2
      * @param <C> the target type of the {@link Setter}
      * @return the composed {@link Setter}
      */
-    public final <C> Setter<S, C> composeSetter(final Setter<A, C> other) {
+    public <C> Setter<S, C> composeSetter(final Setter<A, C> other) {
         return new Setter<>(pTraversal.composeSetter(other.pSetter));
     }
 
@@ -53,7 +53,7 @@ public final class Traversal<S, A> extends PTraversal<S, S, A, A> implements __2
      * @param <C> the target type of the second {@link Traversal}
      * @return the composed {@link Traversal}
      */
-    public final <C> Traversal<S, C> composeTraversal(final Traversal<A, C> other) {
+    public <C> Traversal<S, C> composeTraversal(final Traversal<A, C> other) {
         return new Traversal<>(pTraversal.composeTraversal(other.pTraversal));
     }
 
@@ -65,13 +65,8 @@ public final class Traversal<S, A> extends PTraversal<S, S, A, A> implements __2
      * @return the {@link Setter}
      */
     @Override
-    public final Setter<S, A> asSetter() {
+    public Setter<S, A> asSetter() {
         return new Setter<>(pTraversal.asSetter());
-    }
-
-    @SuppressWarnings({ "rawtypes", "unchecked" })
-    public static <S, A> Traversal<S, A> narrow(final __<__<µ, S>, A> value) {
-        return (Traversal) value;
     }
 
     public static <S> Traversal<S, S> id() {

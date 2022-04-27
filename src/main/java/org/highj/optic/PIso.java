@@ -198,7 +198,7 @@ public abstract class PIso<S, T, A, B> {
      */
     public final <C, D> PIso<S, T, C, D> composeIso(final PIso<A, B, C, D> other) {
         final PIso<S, T, A, B> self = this;
-        return new PIso<S, T, C, D>() {
+        return new PIso<>() {
             @Override
             public C get(final S s) {
                 return other.get(self.get(s));
@@ -212,7 +212,7 @@ public abstract class PIso<S, T, A, B> {
             @Override
             public PIso<D, C, T, S> reverse() {
                 final PIso<S, T, C, D> composeSelf = this;
-                return new PIso<D, C, T, S>() {
+                return new PIso<>() {
                     @Override
                     public T get(final D d) {
                         return self.reverseGet(other.reverseGet(d));
@@ -240,7 +240,7 @@ public abstract class PIso<S, T, A, B> {
      * @return the {@link Fold}
      */
     public final Fold<S, A> asFold() {
-        return new Fold<S, A>() {
+        return new Fold<>() {
             @Override
             public <M> F1<S, M> foldMap(final Monoid<M> m, final Function<A, M> f) {
                 return s -> f.apply(PIso.this.get(s));
@@ -252,7 +252,7 @@ public abstract class PIso<S, T, A, B> {
      * @return the {@link Getter}
      */
     public final Getter<S, A> asGetter() {
-        return new Getter<S, A>() {
+        return new Getter<>() {
             @Override
             public A get(final S s) {
                 return PIso.this.get(s);
@@ -264,7 +264,7 @@ public abstract class PIso<S, T, A, B> {
      * @return the {@link Setter}
      */
     public PSetter<S, T, A, B> asSetter() {
-        return new PSetter<S, T, A, B>() {
+        return new PSetter<>() {
             @Override
             public F1<S, T> modify(final Function<A, B> f) {
                 return PIso.this.modify(f);
@@ -281,7 +281,7 @@ public abstract class PIso<S, T, A, B> {
      * @return the {@link PTraversal}
      */
     public PTraversal<S, T, A, B> asTraversal() {
-        return new PTraversal<S, T, A, B>() {
+        return new PTraversal<>() {
 
             @Override
             public <X> F1<S, __<X, T>> modifyF(final Applicative<X> applicative, final Function<A, __<X, B>> f) {
@@ -295,32 +295,31 @@ public abstract class PIso<S, T, A, B> {
      * @return the {@link POptional}
      */
     public POptional<S, T, A, B> asOptional() {
-        final PIso<S, T, A, B> self = this;
-        return new POptional<S, T, A, B>() {
+        return new POptional<>() {
 
             @Override
             public Either<T, A> getOrModify(final S s) {
-                return Either.Right(self.get(s));
+                return Either.Right(PIso.this.get(s));
             }
 
             @Override
             public <X> F1<S, __<X, T>> modifyF(final Applicative<X> applicative, final Function<A, __<X, B>> f) {
-                return self.modifyF(applicative, f);
+                return PIso.this.modifyF(applicative, f);
             }
 
             @Override
             public F1<S, T> set(final B b) {
-                return self.set(b);
+                return PIso.this.set(b);
             }
 
             @Override
             public Maybe<A> getMaybe(final S s) {
-                return Maybe.Just(self.get(s));
+                return Maybe.Just(PIso.this.get(s));
             }
 
             @Override
             public F1<S, T> modify(final Function<A, B> f) {
-                return self.modify(f);
+                return PIso.this.modify(f);
             }
         };
     }
@@ -330,7 +329,7 @@ public abstract class PIso<S, T, A, B> {
      */
     public PPrism<S, T, A, B> asPrism() {
         final PIso<S, T, A, B> self = this;
-        return new PPrism<S, T, A, B>() {
+        return new PPrism<>() {
             @Override
             public Either<T, A> getOrModify(final S s) {
                 return Either.Right(self.get(s));
@@ -352,26 +351,25 @@ public abstract class PIso<S, T, A, B> {
      * @return the {@link PLens}
      */
     public PLens<S, T, A, B> asLens() {
-        final PIso<S, T, A, B> self = this;
-        return new PLens<S, T, A, B>() {
+        return new PLens<>() {
             @Override
             public A get(final S s) {
-                return self.get(s);
+                return PIso.this.get(s);
             }
 
             @Override
             public F1<S, T> set(final B b) {
-                return self.set(b);
+                return PIso.this.set(b);
             }
 
             @Override
             public F1<S, T> modify(final Function<A, B> f) {
-                return self.modify(f);
+                return PIso.this.modify(f);
             }
 
             @Override
             public <X> F1<S, __<X, T>> modifyF(final Applicative<X> applicative, final Function<A, __<X, B>> f) {
-                return self.modifyF(applicative, f);
+                return PIso.this.modifyF(applicative, f);
             }
         };
     }
@@ -385,8 +383,8 @@ public abstract class PIso<S, T, A, B> {
      * @param <B> the modified target type
      * @return the  {@link PIso}
      */
-    public static final <S, T, A, B> PIso<S, T, A, B> pIso(final Function<S, A> get, final Function<B, T> reverseGet) {
-        return new PIso<S, T, A, B>() {
+    public static <S, T, A, B> PIso<S, T, A, B> pIso(final Function<S, A> get, final Function<B, T> reverseGet) {
+        return new PIso<>() {
 
             @Override
             public A get(final S s) {
@@ -401,7 +399,7 @@ public abstract class PIso<S, T, A, B> {
             @Override
             public PIso<B, A, T, S> reverse() {
                 final PIso<S, T, A, B> self = this;
-                return new PIso<B, A, T, S>() {
+                return new PIso<>() {
                     @Override
                     public T get(final B b) {
                         return reverseGet.apply(b);
@@ -438,7 +436,7 @@ public abstract class PIso<S, T, A, B> {
      * @return the identity {@link PIso}
      */
     public static <S, T> PIso<S, T, S, T> pId() {
-        return new PIso<S, T, S, T>() {
+        return new PIso<>() {
 
             @Override
             public S get(final S s) {
@@ -453,7 +451,7 @@ public abstract class PIso<S, T, A, B> {
             @Override
             public PIso<T, S, T, S> reverse() {
                 final PIso<S, T, S, T> self = this;
-                return new PIso<T, S, T, S>() {
+                return new PIso<>() {
                     @Override
                     public T get(final T t) {
                         return t;

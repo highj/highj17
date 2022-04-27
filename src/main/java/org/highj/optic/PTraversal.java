@@ -124,7 +124,7 @@ public abstract class PTraversal<S, T, A, B> {
      */
     public final <S1, T1> PTraversal<Either<S, S1>, Either<T, T1>, A, B> sum(final PTraversal<S1, T1, A, B> other) {
         final PTraversal<S, T, A, B> self = this;
-        return new PTraversal<Either<S, S1>, Either<T, T1>, A, B>() {
+        return new PTraversal<>() {
             @Override
             public <X> F1<Either<S, S1>, __<X, Either<T, T1>>> modifyF(final Applicative<X> applicative,
                     final Function<A, __<X, B>> f) {
@@ -178,7 +178,7 @@ public abstract class PTraversal<S, T, A, B> {
      */
     public final <C, D> PTraversal<S, T, C, D> composeTraversal(final PTraversal<A, B, C, D> other) {
         final PTraversal<S, T, A, B> self = this;
-        return new PTraversal<S, T, C, D>() {
+        return new PTraversal<>() {
             @Override
             public <X> F1<S, __<X, T>> modifyF(final Applicative<X> applicative, final Function<C, __<X, D>> f) {
                 return self.modifyF(applicative, other.modifyF(applicative, f));
@@ -235,7 +235,7 @@ public abstract class PTraversal<S, T, A, B> {
      * @return the {@link Fold}
      */
     public final Fold<S, A> asFold() {
-        return new Fold<S, A>() {
+        return new Fold<>() {
             @Override
             public <M> F1<S, M> foldMap(final Monoid<M> monoid, final Function<A, M> f) {
                 return PTraversal.this.foldMap(monoid, f);
@@ -255,7 +255,7 @@ public abstract class PTraversal<S, T, A, B> {
     }
 
     public static <S, T> PTraversal<Either<S, S>, Either<T, T>, S, T> pCodiagonal() {
-        return new PTraversal<Either<S, S>, Either<T, T>, S, T>() {
+        return new PTraversal<>() {
 
             @Override
             public <X> F1<Either<S, S>, __<X, Either<T, T>>> modifyF(final Applicative<X> applicative,
@@ -277,7 +277,7 @@ public abstract class PTraversal<S, T, A, B> {
      * @return the {@link PTraversal}
      */
     public static <T, A, B> PTraversal<__<T, A>, __<T, B>, A, B> fromTraversable(final Traversable<T> traverse) {
-        return new PTraversal<__<T, A>, __<T, B>, A, B>() {
+        return new PTraversal<>() {
             @Override
             public <X> F1<__<T, A>, __<X, __<T, B>>> modifyF(final Applicative<X> applicative, final Function<A, __<X, B>> f) {
                 return traversable -> traverse.traverse(applicative, f, traversable);
@@ -287,7 +287,7 @@ public abstract class PTraversal<S, T, A, B> {
 
     public static <S, T, A, B> PTraversal<S, T, A, B> pTraversal(final Function<S, A> get1, final Function<S, A> get2,
             final F3<B, B, S, T> set) {
-        return new PTraversal<S, T, A, B>() {
+        return new PTraversal<>() {
 
             @Override
             public <X> F1<S, __<X, T>> modifyF(final Applicative<X> applicative, final Function<A, __<X, B>> f) {
@@ -300,7 +300,7 @@ public abstract class PTraversal<S, T, A, B> {
     public static <S, T, A, B> PTraversal<S, T, A, B> pTraversal(final Function<S, A> get1, final Function<S, A> get2,
             final Function<S, A> get3,
             final F4<B, B, B, S, T> set) {
-        return new PTraversal<S, T, A, B>() {
+        return new PTraversal<>() {
             @Override
             public <X> F1<S, __<X, T>> modifyF(final Applicative<X> applicative, final Function<A, __<X, B>> f) {
                 return s -> applicative.apply3(b1 -> b2 -> b3 -> set.apply(b1, b2, b3, s),
@@ -308,5 +308,4 @@ public abstract class PTraversal<S, T, A, B> {
             }
         };
     }
-
 }

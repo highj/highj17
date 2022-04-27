@@ -23,7 +23,7 @@ public interface Comonad<W> extends Extend<W> {
     }
 
     default <A, B> Function<__<W, A>, B> liftCtx(Function<A, B> fn) {
-        return Functions.compose(this::<B>extract, lift(fn));
+        return Functions.compose(this::extract, lift(fn));
     }
 
     default <A, B> Function<__<W, List<A>>, List<B>> mapW(final Function<__<W, A>, B> fn) {

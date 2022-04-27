@@ -46,7 +46,7 @@ public final class Prism<S, A> extends PPrism<S, S, A, A> implements __2<Prism.Â
      * @param <C> the target type of the {@link Setter}
      * @return the composed {@link Setter}
      */
-    public final <C> Setter<S, C> composeSetter(final Setter<A, C> other) {
+    public <C> Setter<S, C> composeSetter(final Setter<A, C> other) {
         return new Setter<>(pPrism.composeSetter(other.pSetter));
     }
 
@@ -55,7 +55,7 @@ public final class Prism<S, A> extends PPrism<S, S, A, A> implements __2<Prism.Â
      * @param <C> the target type of the {@link Traversal}
      * @return the composed {@link Traversal}
      */
-    public final <C> Traversal<S, C> composeTraversal(final Traversal<A, C> other) {
+    public <C> Traversal<S, C> composeTraversal(final Traversal<A, C> other) {
         return new Traversal<>(pPrism.composeTraversal(other.pTraversal));
     }
 
@@ -64,7 +64,7 @@ public final class Prism<S, A> extends PPrism<S, S, A, A> implements __2<Prism.Â
      * @param <C> the target type of the {@link Optional}
      * @return the composed {@link Optional}
      */
-    public final <C> Optional<S, C> composeOptional(final Optional<A, C> other) {
+    public <C> Optional<S, C> composeOptional(final Optional<A, C> other) {
         return new Optional<>(pPrism.composeOptional(other.pOptional));
     }
 
@@ -73,7 +73,7 @@ public final class Prism<S, A> extends PPrism<S, S, A, A> implements __2<Prism.Â
      * @param <C> the target type of the {@link Lens}
      * @return the composed {@link Optional}
      */
-    public final <C> Optional<S, C> composeLens(final Lens<A, C> other) {
+    public <C> Optional<S, C> composeLens(final Lens<A, C> other) {
         return new Optional<>(pPrism.composeLens(other.pLens));
     }
 
@@ -82,7 +82,7 @@ public final class Prism<S, A> extends PPrism<S, S, A, A> implements __2<Prism.Â
      * @param <C> the target type of the second {@link Prism}
      * @return the composed {@link Prism}
      */
-    public final <C> Prism<S, C> composePrism(final Prism<A, C> other) {
+    public <C> Prism<S, C> composePrism(final Prism<A, C> other) {
         return new Prism<>(pPrism.composePrism(other.pPrism));
     }
 
@@ -91,7 +91,7 @@ public final class Prism<S, A> extends PPrism<S, S, A, A> implements __2<Prism.Â
      * @param <C> the target type of the {@link Iso}
      * @return the composed {@link Prism}
      */
-    public final <C> Prism<S, C> composeIso(final Iso<A, C> other) {
+    public <C> Prism<S, C> composeIso(final Iso<A, C> other) {
         return new Prism<>(pPrism.composeIso(other.pIso));
     }
 
@@ -103,7 +103,7 @@ public final class Prism<S, A> extends PPrism<S, S, A, A> implements __2<Prism.Â
      * @return the {@link Setter}
      */
     @Override
-    public final Setter<S, A> asSetter() {
+    public Setter<S, A> asSetter() {
         return new Setter<>(pPrism.asSetter());
     }
 
@@ -111,7 +111,7 @@ public final class Prism<S, A> extends PPrism<S, S, A, A> implements __2<Prism.Â
      * @return the {@link Traversal}
      */
     @Override
-    public final Traversal<S, A> asTraversal() {
+    public Traversal<S, A> asTraversal() {
         return new Traversal<>(pPrism.asTraversal());
     }
 
@@ -119,13 +119,8 @@ public final class Prism<S, A> extends PPrism<S, S, A, A> implements __2<Prism.Â
      * @return the {@link Optional}
      */
     @Override
-    public final Optional<S, A> asOptional() {
+    public Optional<S, A> asOptional() {
         return new Optional<>(pPrism.asOptional());
-    }
-
-    @SuppressWarnings({ "rawtypes", "unchecked" })
-    public static <S, A> Prism<S, A> narrow(final __<__<Âµ, S>, A> value) {
-        return (Prism) value;
     }
 
     public static <S> Prism<S, S> id() {
@@ -133,11 +128,11 @@ public final class Prism<S, A> extends PPrism<S, S, A, A> implements __2<Prism.Â
     }
 
     public static <S, A> Prism<S, A> prism(final Function<S, Maybe<A>> getMaybe, final Function<A, S> reverseGet) {
-        return new Prism<>(new PPrism<S, S, A, A>() {
+        return new Prism<>(new PPrism<>() {
 
             @Override
             public Either<S, A> getOrModify(final S s) {
-                return getMaybe.apply(s).cata(Either.<S, A>Left(s), Either::<S, A>Right);
+                return getMaybe.apply(s).cata(Either.Left(s), Either::Right);
             }
 
             @Override
@@ -151,18 +146,4 @@ public final class Prism<S, A> extends PPrism<S, S, A, A> implements __2<Prism.Â
             }
         });
     }
-
-    public static final Category<Prism.Âµ> prismCategory = new Category<Prism.Âµ>() {
-
-        @Override
-        public <B, C, D> __2<Âµ, B, D> dot(final __2<Âµ, C, D> cd, final __2<Âµ, B, C> bc) {
-            return narrow(bc).composePrism(narrow(cd));
-        }
-
-        @Override
-        public <B> __2<Âµ, B, B> identity() {
-            return id();
-        }
-    };
-
 }

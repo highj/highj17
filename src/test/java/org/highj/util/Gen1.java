@@ -13,7 +13,7 @@ import org.highj.data.tuple.T1;
 public interface Gen1<F> {
     <T> Gen<__<F, T>> gen(Gen<T> gen);
 
-    Gen1<Maybe.µ> maybeGen1 = new Gen1<Maybe.µ>() {
+    Gen1<Maybe.µ> maybeGen1 = new Gen1<>() {
         @Override
         public <T> Gen<__<Maybe.µ, T>> gen(Gen<T> gen) {
             return gen.map(s ->
@@ -21,7 +21,7 @@ public interface Gen1<F> {
         }
     };
 
-    Gen1<List.µ> listGen1 = new Gen1<List.µ>() {
+    Gen1<List.µ> listGen1 = new Gen1<>() {
         @Override
         public <T> Gen<__<List.µ, T>> gen(Gen<T> gen) {
             return maxSize -> List.range(0, 1, maxSize - 1).map(i ->
@@ -29,7 +29,7 @@ public interface Gen1<F> {
         }
     };
 
-    Gen1<T1.µ> t1Gen1 = new Gen1<T1.µ>() {
+    Gen1<T1.µ> t1Gen1 = new Gen1<>() {
         @Override
         public <T> Gen<__<T1.µ, T>> gen(Gen<T> gen) {
             return gen.map(T1::of);

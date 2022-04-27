@@ -92,16 +92,6 @@ public class T3Test {
     }
 
     @Test
-    public void narrow() {
-        T3<String, Integer, Character> t3 = T3.of("foo", 42, 'A');
-        __<__<__<T3.µ, String>, Integer>, Character> hkt = t3;
-        assertThat(asT3(hkt)).isSameAs(t3);
-        T3<String, Integer, Character> t3$ = T3.of$(() -> "foo", () -> 42, () -> 'A');
-        __<__<__<T3.µ, String>, Integer>, Character> hkt$ = t3$;
-        assertThat(asT3(hkt$)).isSameAs(t3$);
-    }
-
-    @Test
     public void map_1() {
         T3<String, Integer, Character> t3 = T3.of("foo", 42, 'A');
         assertThat(t3.map_1(String::length)).isEqualTo(T3.of(3, 42, 'A'));

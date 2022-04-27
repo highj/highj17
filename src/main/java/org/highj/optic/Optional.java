@@ -52,17 +52,17 @@ public final class Optional<S, A> extends POptional<S, S, A, A> implements __2<O
      * @param <S1> the source type of the second {@link Optional}
      * @return the combined {@link Optional}
      */
-    public final <S1> Optional<Either<S, S1>, A> sum(final Optional<S1, A> other) {
+    public <S1> Optional<Either<S, S1>, A> sum(final Optional<S1, A> other) {
         return new Optional<>(pOptional.sum(other.pOptional));
     }
 
     @Override
-    public final <C> Optional<T2<S, C>, T2<A, C>> first() {
+    public <C> Optional<T2<S, C>, T2<A, C>> first() {
         return new Optional<>(pOptional.first());
     }
 
     @Override
-    public final <C> Optional<T2<C, S>, T2<C, A>> second() {
+    public <C> Optional<T2<C, S>, T2<C, A>> second() {
         return new Optional<>(pOptional.second());
     }
 
@@ -75,7 +75,7 @@ public final class Optional<S, A> extends POptional<S, S, A, A> implements __2<O
      * @param <C> the target type of the {@link Setter}
      * @return the composed {@link Setter}
      */
-    public final <C> Setter<S, C> composeSetter(final Setter<A, C> other) {
+    public <C> Setter<S, C> composeSetter(final Setter<A, C> other) {
         return new Setter<>(pOptional.composeSetter(other.pSetter));
     }
 
@@ -84,7 +84,7 @@ public final class Optional<S, A> extends POptional<S, S, A, A> implements __2<O
      * @param <C> the target type of the {@link Traversal}
      * @return the composed {@link Traversal}
      */
-    public final <C> Traversal<S, C> composeTraversal(final Traversal<A, C> other) {
+    public <C> Traversal<S, C> composeTraversal(final Traversal<A, C> other) {
         return new Traversal<>(pOptional.composeTraversal(other.pTraversal));
     }
 
@@ -93,7 +93,7 @@ public final class Optional<S, A> extends POptional<S, S, A, A> implements __2<O
      * @param <C> the target type of the second {@link Optional}
      * @return the composed {@link Optional}
      */
-    public final <C> Optional<S, C> composeOptional(final Optional<A, C> other) {
+    public <C> Optional<S, C> composeOptional(final Optional<A, C> other) {
         return new Optional<>(pOptional.composeOptional(other.pOptional));
     }
 
@@ -102,7 +102,7 @@ public final class Optional<S, A> extends POptional<S, S, A, A> implements __2<O
      * @param <C> the target type of the {@link Prism}
      * @return the composed {@link Optional}
      */
-    public final <C> Optional<S, C> composePrism(final Prism<A, C> other) {
+    public <C> Optional<S, C> composePrism(final Prism<A, C> other) {
         return new Optional<>(pOptional.composePrism(other.pPrism));
     }
 
@@ -111,7 +111,7 @@ public final class Optional<S, A> extends POptional<S, S, A, A> implements __2<O
      * @param <C> the target type of the {@link Lens}
      * @return the composed {@link Optional}
      */
-    public final <C> Optional<S, C> composeLens(final Lens<A, C> other) {
+    public <C> Optional<S, C> composeLens(final Lens<A, C> other) {
         return new Optional<>(pOptional.composeLens(other.pLens));
     }
 
@@ -120,7 +120,7 @@ public final class Optional<S, A> extends POptional<S, S, A, A> implements __2<O
      * @param <C> the target type of the {@link Iso}
      * @return the composed {@link Optional}
      */
-    public final <C> Optional<S, C> composeIso(final Iso<A, C> other) {
+    public <C> Optional<S, C> composeIso(final Iso<A, C> other) {
         return new Optional<>(pOptional.composeIso(other.pIso));
     }
 
@@ -132,7 +132,7 @@ public final class Optional<S, A> extends POptional<S, S, A, A> implements __2<O
      * @return the {@link Setter}
      */
     @Override
-    public final Setter<S, A> asSetter() {
+    public Setter<S, A> asSetter() {
         return new Setter<>(pOptional.asSetter());
     }
 
@@ -140,20 +140,15 @@ public final class Optional<S, A> extends POptional<S, S, A, A> implements __2<O
      * @return the {@link Traversal}
      */
     @Override
-    public final Traversal<S, A> asTraversal() {
+    public Traversal<S, A> asTraversal() {
         return new Traversal<>(pOptional.asTraversal());
-    }
-
-    @SuppressWarnings({ "rawtypes", "unchecked" })
-    public static <S, A> Optional<S, A> narrow(final __<__<µ, S>, A> value) {
-        return (Optional) value;
     }
 
     public static <S> Optional<S, S> id() {
         return new Optional<>(POptional.pId());
     }
 
-    public static final <S, A> Optional<S, A> optional(final Function<S, Maybe<A>> getMaybe,
+    public static <S, A> Optional<S, A> optional(final Function<S, Maybe<A>> getMaybe,
             final Function<A, F1<S, S>> set) {
         return new Optional<>(new POptional<S, S, A, A>() {
 

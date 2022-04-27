@@ -47,7 +47,7 @@ public final class Lens<S, A> extends PLens<S, S, A, A> implements __2<Lens.µ, 
      * @param <S1> the source type of the second {@link Lens}
      * @return the combined {@link Lens}
      */
-    public final <S1> Lens<Either<S, S1>, A> sum(final Lens<S1, A> other) {
+    public <S1> Lens<Either<S, S1>, A> sum(final Lens<S1, A> other) {
         return new Lens<>(pLens.sum(other.pLens));
     }
 
@@ -60,7 +60,7 @@ public final class Lens<S, A> extends PLens<S, S, A, A> implements __2<Lens.µ, 
      * @param <C> the target type of the {@link Setter}
      * @return the composed {@link Setter}
      */
-    public final <C> Setter<S, C> composeSetter(final Setter<A, C> other) {
+    public <C> Setter<S, C> composeSetter(final Setter<A, C> other) {
         return new Setter<>(pLens.composeSetter(other.pSetter));
     }
 
@@ -69,7 +69,7 @@ public final class Lens<S, A> extends PLens<S, S, A, A> implements __2<Lens.µ, 
      * @param <C> the target type of the {@link Traversal}
      * @return the composed {@link Traversal}
      */
-    public final <C> Traversal<S, C> composeTraversal(final Traversal<A, C> other) {
+    public <C> Traversal<S, C> composeTraversal(final Traversal<A, C> other) {
         return new Traversal<>(pLens.composeTraversal(other.pTraversal));
     }
 
@@ -78,7 +78,7 @@ public final class Lens<S, A> extends PLens<S, S, A, A> implements __2<Lens.µ, 
      * @param <C> the target type of the {@link Optional}
      * @return the composed {@link Optional}
      */
-    public final <C> Optional<S, C> composeOptional(final Optional<A, C> other) {
+    public <C> Optional<S, C> composeOptional(final Optional<A, C> other) {
         return new Optional<>(pLens.composeOptional(other.pOptional));
     }
 
@@ -87,7 +87,7 @@ public final class Lens<S, A> extends PLens<S, S, A, A> implements __2<Lens.µ, 
      * @param <C> the target type of the {@link Prism}
      * @return the composed {@link Optional}
      */
-    public final <C> Optional<S, C> composePrism(final Prism<A, C> other) {
+    public <C> Optional<S, C> composePrism(final Prism<A, C> other) {
         return new Optional<>(pLens.composePrism(other.pPrism));
     }
 
@@ -96,7 +96,7 @@ public final class Lens<S, A> extends PLens<S, S, A, A> implements __2<Lens.µ, 
      * @param <C> the target type of the second {@link Lens}
      * @return the composed {@link Lens}
      */
-    public final <C> Lens<S, C> composeLens(final Lens<A, C> other) {
+    public <C> Lens<S, C> composeLens(final Lens<A, C> other) {
         return new Lens<>(pLens.composeLens(other.pLens));
     }
 
@@ -105,7 +105,7 @@ public final class Lens<S, A> extends PLens<S, S, A, A> implements __2<Lens.µ, 
      * @param <C> the modified target type of the {@link Iso}
      * @return the composed {@link Lens}
      */
-    public final <C> Lens<S, C> composeIso(final Iso<A, C> other) {
+    public <C> Lens<S, C> composeIso(final Iso<A, C> other) {
         return new Lens<>(pLens.composeIso(other.pIso));
     }
 
@@ -125,24 +125,19 @@ public final class Lens<S, A> extends PLens<S, S, A, A> implements __2<Lens.µ, 
      * @return the {@link Traversal}
      */
     @Override
-    public final Traversal<S, A> asTraversal() {
+    public Traversal<S, A> asTraversal() {
         return new Traversal<>(pLens.asTraversal());
-    }
-
-    @SuppressWarnings({ "rawtypes", "unchecked" })
-    public static <S, A> Lens<S, A> narrow(final __<__<µ, S>, A> value) {
-        return (Lens) value;
     }
 
     /** View a {@link Lens} as an {@link Optional}
      * @return the {@link Optional}
      */
     @Override
-    public final Optional<S, A> asOptional() {
+    public Optional<S, A> asOptional() {
         return new Optional<>(pLens.asOptional());
     }
 
-    public static final <S> Lens<S, S> id() {
+    public static <S> Lens<S, S> id() {
         return new Lens<>(PLens.pId());
     }
 

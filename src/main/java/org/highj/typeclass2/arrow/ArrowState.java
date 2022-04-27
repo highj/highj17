@@ -14,7 +14,7 @@ import org.highj.data.tuple.T0;
  */
 public interface ArrowState<S,A> extends Arrow<A> {
     
-    public <B> __2<A,B,S> fetch();
+    <B> __2<A,B,S> fetch();
     
-    public __2<A,S,T0> store();
+    __2<A,S,T0> store();
 }

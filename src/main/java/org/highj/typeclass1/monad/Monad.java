@@ -26,32 +26,26 @@ public interface Monad<M> extends Applicative<M>, Bind<M> {
 
     //foldM (Control.Monad)
     default <A, B> Function<A, Function<List<B>, __<M, A>>> foldM(final Function<A, Function<B, __<M, A>>> fn) {
-        return a -> listB -> {
-            __<M, A> result = pure(a);
-            final Mutable<B> b = new Mutable<>();
-            Function<A, __<M, A>> fnBind = x -> fn.apply(x).apply(b.get());
-            while (!listB.isEmpty()) {
-                b.set(listB.head());
-                listB = listB.tail();
-                result = bind(result, fnBind);
-            }
-            return result;
-        };
+        return a -> listB -> foldList(fn, listB, pure(a));
     }
 
     //foldM_ (Control.Monad)
     default <A, B> Function<A, Function<List<B>, __<M, T0>>> foldM_(final Function<A, Function<B, __<M, A>>> fn) {
         return a -> listB -> {
-            __<M, A> result = pure(a);
-            final Mutable<B> b = Mutable.newMutable();
-            Function<A, __<M, A>> fnBind = x -> fn.apply(x).apply(b.get());
-            while (!listB.isEmpty()) {
-                b.set(listB.head());
-                listB = listB.tail();
-                result = bind(result, fnBind);
-            }
+            foldList(fn, listB, pure(a));
             return pure(T0.unit);
         };
+    }
+
+    private <A, B> __<M, A> foldList(Function<A, Function<B, __<M, A>>> fn, List<B> listB, __<M, A> result) {
+        final Mutable<B> b = new Mutable<>();
+        Function<A, __<M, A>> fnBind = x -> fn.apply(x).apply(b.get());
+        while (!listB.isEmpty()) {
+            b.set(listB.head());
+            listB = listB.tail();
+            result = bind(result, fnBind);
+        }
+        return result;
     }
 
     //replicateM (Control.Monad)
@@ -75,5 +69,4 @@ public interface Monad<M> extends Applicative<M>, Bind<M> {
     default <A> __<M, T0> sequence_(List<__<M, A>> list) {
         return list.foldr((ma, mu) -> this.rightSeq(ma, mu), pure(T0.of()));
     }
-
 }

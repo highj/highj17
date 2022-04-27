@@ -144,7 +144,7 @@ public abstract class PLens<S, T, A, B> {
      */
     public final <C, D> PLens<S, T, C, D> composeLens(final PLens<A, B, C, D> other) {
         final PLens<S, T, A, B> self = this;
-        return new PLens<S, T, C, D>() {
+        return new PLens<>() {
             @Override
             public C get(final S s) {
                 return other.get(self.get(s));
@@ -185,7 +185,7 @@ public abstract class PLens<S, T, A, B> {
      * @return the {@link Fold}
      */
     public final Fold<S, A> asFold() {
-        return new Fold<S, A>() {
+        return new Fold<>() {
             @Override
             public <M> F1<S, M> foldMap(final Monoid<M> m, final Function<A, M> f) {
                 return s -> f.apply(get(s));
@@ -197,7 +197,7 @@ public abstract class PLens<S, T, A, B> {
      * @return the {@link Getter}
      */
     public final Getter<S, A> asGetter() {
-        return new Getter<S, A>() {
+        return new Getter<>() {
             @Override
             public A get(final S s) {
                 return PLens.this.get(s);
@@ -209,7 +209,7 @@ public abstract class PLens<S, T, A, B> {
      * @return the {@link PSetter}
      */
     public PSetter<S, T, A, B> asSetter() {
-        return new PSetter<S, T, A, B>() {
+        return new PSetter<>() {
             @Override
             public F1<S, T> modify(final Function<A, B> f) {
                 return PLens.this.modify(f);
@@ -226,7 +226,7 @@ public abstract class PLens<S, T, A, B> {
      * @return the {@link PTraversal}
      */
     public PTraversal<S, T, A, B> asTraversal() {
-        return new PTraversal<S, T, A, B>() {
+        return new PTraversal<>() {
 
             @Override
             public <X> F1<S, __<X, T>> modifyF(final Applicative<X> applicative, final Function<A, __<X, B>> f) {
@@ -241,7 +241,7 @@ public abstract class PLens<S, T, A, B> {
      */
     public POptional<S, T, A, B> asOptional() {
         final PLens<S, T, A, B> self = this;
-        return new POptional<S, T, A, B>() {
+        return new POptional<>() {
             @Override
             public Either<T, A> getOrModify(final S s) {
                 return Either.Right(self.get(s));
@@ -269,7 +269,7 @@ public abstract class PLens<S, T, A, B> {
         };
     }
 
-    public static final <S, T> PLens<S, T, S, T> pId() {
+    public static <S, T> PLens<S, T, S, T> pId() {
         return PIso.<S, T> pId().asLens();
     }
 
@@ -283,7 +283,7 @@ public abstract class PLens<S, T, A, B> {
      * @return the {@link PLens}
      */
     public static <S, T, A, B> PLens<S, T, A, B> pLens(final Function<S, A> get, final Function<B, F1<S, T>> set) {
-        return new PLens<S, T, A, B>() {
+        return new PLens<>() {
 
             @Override
             public A get(final S s) {

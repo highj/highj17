@@ -16,12 +16,12 @@ public interface Bind<M> extends Apply<M> {
 
     // join (Control.Monad)
     default <A> __<M, A> join(__<M, __<M, A>> nestedNestedA) {
-        return bind(nestedNestedA, Function.<__<M, A>>identity());
+        return bind(nestedNestedA, Function.identity());
     }
 
     // (>>) (Control.Monad)
     default <A, B> __<M, B> semicolon(__<M, A> nestedA, __<M, B> nestedB) {
-        return bind(nestedA, Functions.<A, __<M, B>>constant(nestedB));
+        return bind(nestedA, Functions.constant(nestedB));
     }
 
     // (>=>) (Control.Monad) left-to-right Kleisli composition of monads

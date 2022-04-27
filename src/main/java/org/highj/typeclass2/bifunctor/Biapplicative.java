@@ -10,7 +10,7 @@ public interface Biapplicative<F> extends Biapply<F> {
     <A,B> __2<F,A,B> bipure(A a, B b);
 
     default <X> Applicative<__<F,X>> getApplicative(Monoid<X> monoid) {
-        return new CurriedApplicative<F,X>() {
+        return new CurriedApplicative<>() {
 
             @Override
             public Biapplicative<F> bi() {

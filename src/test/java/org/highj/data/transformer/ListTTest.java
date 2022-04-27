@@ -21,10 +21,8 @@ public class ListTTest {
     @Test
     public void narrow() {
         ListT<µ, Integer> listT = listTOf(42);
-        // narrow() must convert __ HKTs
         __<__<ListT.µ, µ>, Integer> htk = listT;
         assertThat(asListT(htk)).isSameAs(listT);
-        // narrow() must convert __2 HKTs
         __2<ListT.µ, µ, Integer> htk2 = listT;
         assertThat(asListT(htk2)).isSameAs(listT);
     }

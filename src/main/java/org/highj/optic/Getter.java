@@ -2,11 +2,11 @@ package org.highj.optic;
 
 import java.util.function.Function;
 
-import org.highj.hkt.__;
 import org.highj.hkt.__2;
 import org.highj.data.Either;
 import org.highj.function.F1;
 import org.highj.data.tuple.T2;
+import org.highj.optic.instance.GetterArrow;
 import org.highj.typeclass0.group.Monoid;
 import org.highj.typeclass2.arrow.Arrow;
 
@@ -134,7 +134,7 @@ public abstract class Getter<S, A> implements __2<Getter.µ, S, A> {
      * @return the {@link Fold}
      */
     public final Fold<S, A> asFold() {
-        return new Fold<S, A>() {
+        return new Fold<>() {
             @Override
             public <B> F1<S, B> foldMap(final Monoid<B> m, final Function<A, B> f) {
                 return s -> f.apply(get(s));
@@ -142,21 +142,16 @@ public abstract class Getter<S, A> implements __2<Getter.µ, S, A> {
         };
     }
 
-    @SuppressWarnings({ "rawtypes", "unchecked" })
-    public static <S, A> Getter<S, A> narrow(final __<__<µ, S>, A> value) {
-        return (Getter) value;
-    }
-
     public static <A> Getter<A, A> id() {
         return PIso.<A, A> pId().asGetter();
     }
 
-    public static final <A> Getter<Either<A, A>, A> codiagonal() {
+    public static <A> Getter<Either<A, A>, A> codiagonal() {
         return getter(e -> e.either(F1.id(), F1.id()));
     }
 
-    public static final <S, A> Getter<S, A> getter(final Function<S, A> get) {
-        return new Getter<S, A>() {
+    public static <S, A> Getter<S, A> getter(final Function<S, A> get) {
+        return new Getter<>() {
 
             @Override
             public A get(final S s) {
@@ -165,37 +160,5 @@ public abstract class Getter<S, A> implements __2<Getter.µ, S, A> {
         };
     }
 
-    public static final Arrow<Getter.µ> getterArrow = new Arrow<Getter.µ>() {
-
-        @Override
-        public <B, C, D> __2<µ, B, D> dot(final __2<µ, C, D> cd, final __2<µ, B, C> bc) {
-            return narrow(bc).composeGetter(narrow(cd));
-        }
-
-        @Override
-        public <B> __2<µ, B, B> identity() {
-            return id();
-        }
-
-        @Override
-        public <B, C, D> __2<µ, T2<B, D>, T2<C, D>> first(final __2<µ, B, C> arrow) {
-            return narrow(arrow).first();
-        }
-
-        @Override
-        public <B, C, D> __2<µ, T2<D, B>, T2<D, C>> second(final __2<µ, B, C> arrow) {
-            return narrow(arrow).second();
-        }
-
-        @Override
-        public <B, C> __2<µ, B, C> arr(final Function<B, C> fn) {
-            return getter(fn);
-        }
-
-        @Override
-        public <B, C, BB, CC> __2<µ, T2<B, BB>, T2<C, CC>> split(final __2<µ, B, C> arr1,
-                final __2<µ, BB, CC> arr2) {
-            return narrow(arr1).product(narrow(arr2));
-        }
-    };
+    public static final Arrow<Getter.µ> getterArrow = new GetterArrow() {};
 }

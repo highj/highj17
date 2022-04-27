@@ -47,7 +47,7 @@ public final class Setter<S, A> extends PSetter<S, S, A, A> implements __2<Sette
      * @param <C> the target type of the second {@link Setter}
      * @return the composed {@link Setter}
      */
-    public final <C> Setter<S, C> composeSetter(final Setter<A, C> other) {
+    public <C> Setter<S, C> composeSetter(final Setter<A, C> other) {
         return new Setter<>(pSetter.composeSetter(other.pSetter));
     }
 
@@ -56,7 +56,7 @@ public final class Setter<S, A> extends PSetter<S, S, A, A> implements __2<Sette
      * @param <C> the target type of the {@link Traversal}
      * @return the composed {@link Setter}
      */
-    public final <C> Setter<S, C> composeTraversal(final Traversal<A, C> other) {
+    public <C> Setter<S, C> composeTraversal(final Traversal<A, C> other) {
         return new Setter<>(pSetter.composeTraversal(other.pTraversal));
     }
 
@@ -65,20 +65,15 @@ public final class Setter<S, A> extends PSetter<S, S, A, A> implements __2<Sette
      * @param <C> the target type of the {@link Iso}
      * @return the composed {@link Setter}
      */
-    public final <C> Setter<S, C> composeIso(final Iso<A, C> other) {
+    public <C> Setter<S, C> composeIso(final Iso<A, C> other) {
         return new Setter<>(pSetter.composeIso(other.pIso));
-    }
-
-    @SuppressWarnings({ "rawtypes", "unchecked" })
-    public static <S, A> Setter<S, A> narrow(final __<__<µ, S>, A> value) {
-        return (Setter) value;
     }
 
     public static <S> Setter<S, S> id() {
         return new Setter<>(PSetter.pId());
     }
 
-    public static final <S> Setter<Either<S, S>, S> codiagonal() {
+    public static <S> Setter<Either<S, S>, S> codiagonal() {
         return new Setter<>(PSetter.pCodiagonal());
     }
 
@@ -88,7 +83,7 @@ public final class Setter<S, A> extends PSetter<S, S, A, A> implements __2<Sette
      * @param <A> the target type of the {@link Setter}
      * @return the {@link Setter}
      */
-    public static final <S, A> Setter<S, A> setter(final Function<Function<A, A>, F1<S, S>> modify) {
+    public static <S, A> Setter<S, A> setter(final Function<Function<A, A>, F1<S, S>> modify) {
         return new Setter<>(PSetter.pSetter(modify));
     }
 

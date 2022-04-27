@@ -66,10 +66,4 @@ public class EqTest {
         assertThat(eq.eq(a1, a2)).isFalse();
     }
 
-    @Test
-    public void narrow() {
-        Eq<String> eq = Eq.fromEquals();
-        __<Eq.µ, String> hkt = eq;
-        assertThat(asEq(hkt)).isSameAs(eq);
-    }
 }

@@ -13,5 +13,5 @@ import org.highj.hkt.__2;
  */
 public interface ArrowCircuit<A> extends ArrowLoop<A> {
     
-    public <B> __2<A,B,B> delay(B b);
+    <B> __2<A,B,B> delay(B b);
 }

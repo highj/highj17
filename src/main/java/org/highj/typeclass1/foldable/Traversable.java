@@ -31,7 +31,7 @@ public interface Traversable<T> extends Foldable<T>, Functor<T> {
     }
 
     default <A, X> __<X, __<T, A>> sequenceA(Applicative<X> applicative, __<T, __<X, A>> traversable) {
-        return traverse(applicative, Function.<__<X, A>>identity(), traversable);
+        return traverse(applicative, Function.identity(), traversable);
     }
 
     @Override

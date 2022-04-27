@@ -109,14 +109,6 @@ public class T4Test {
     }
 
     @Test
-    public void narrow() {
-        T4<Long, String, Integer, Character> t4 = T4.of(4711L, "foo", 42, 'A');
-        assertThat(asT4(t4)).isSameAs(t4);
-        T4<Long, String, Integer, Character> t4$ = T4.of$(() -> 4711L, () -> "foo", () -> 42, () -> 'A');
-        assertThat(asT4(t4$)).isSameAs(t4$);
-    }
-
-    @Test
     public void map_1() {
         T4<Long, String, Integer, Character> t4 = T4.of(4711L, "foo", 42, 'A');
         assertThat(t4.map_1(x -> x - 11)).isEqualTo(T4.of(4700L, "foo", 42, 'A'));

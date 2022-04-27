@@ -14,5 +14,5 @@ import org.highj.data.tuple.T2;
  */
 public interface ArrowLoop<A> extends Arrow<A> {
     
-    public <B,C,D> __2<A,B,C> loop(__2<A,T2<B,D>,T2<C,D>> arrow);
+    <B,C,D> __2<A,B,C> loop(__2<A,T2<B,D>,T2<C,D>> arrow);
 }

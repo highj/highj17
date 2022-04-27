@@ -12,7 +12,7 @@ public interface Isomorphic<A, B> extends Injective<A, B> {
     A from(B input);
 
     static <A, B> Isomorphic<A, B> of(Function<A, B> fnTo, Function<B, A> fnFrom) {
-        return new Isomorphic<A, B>() {
+        return new Isomorphic<>() {
             @Override
             public A from(B input) {
                 return fnFrom.apply(input);

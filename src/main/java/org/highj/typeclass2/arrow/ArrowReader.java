@@ -14,7 +14,7 @@ import org.highj.data.tuple.T2;
  */
 public interface ArrowReader<R,A> extends Arrow<A> {
     
-    public <B> __2<A,B,R> readState();
+    <B> __2<A,B,R> readState();
     
-    public <B,C> __2<A,T2<B,R>,C> newReader(__2<A,B,C> a);
+    <B,C> __2<A,T2<B,R>,C> newReader(__2<A,B,C> a);
 }

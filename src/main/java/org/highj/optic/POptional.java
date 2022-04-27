@@ -164,7 +164,7 @@ public abstract class POptional<S, T, A, B> {
      */
     public final <C, D> POptional<S, T, C, D> composeOptional(final POptional<A, B, C, D> other) {
         final POptional<S, T, A, B> self = this;
-        return new POptional<S, T, C, D>() {
+        return new POptional<>() {
 
             @Override
             public Either<T, C> getOrModify(final S s) {
@@ -233,7 +233,7 @@ public abstract class POptional<S, T, A, B> {
      * @return the {@link Fold}
      */
     public final Fold<S, A> asFold() {
-        return new Fold<S, A>() {
+        return new Fold<>() {
             @Override
             public <M> F1<S, M> foldMap(final Monoid<M> m, final Function<A, M> f) {
                 return s -> POptional.this.getMaybe(s).map(f).getOrElse(m.identity());
@@ -245,7 +245,7 @@ public abstract class POptional<S, T, A, B> {
      * @return the {@link PSetter}
      */
     public PSetter<S, T, A, B> asSetter() {
-        return new PSetter<S, T, A, B>() {
+        return new PSetter<>() {
             @Override
             public F1<S, T> modify(final Function<A, B> f) {
                 return POptional.this.modify(f);
@@ -262,7 +262,7 @@ public abstract class POptional<S, T, A, B> {
      * @return the {@link PTraversal}
      */
     public PTraversal<S, T, A, B> asTraversal() {
-        return new PTraversal<S, T, A, B>() {
+        return new PTraversal<>() {
 
             @Override
             public <X> F1<S, __<X, T>> modifyF(final Applicative<X> applicative, final Function<A, __<X, B>> f) {
@@ -285,9 +285,9 @@ public abstract class POptional<S, T, A, B> {
      * @param <B> the modified target type
      * @return the {@link POptional}
      */
-    public static final <S, T, A, B> POptional<S, T, A, B> pOptional(final Function<S, Either<T, A>> getOrModify,
+    public static <S, T, A, B> POptional<S, T, A, B> pOptional(final Function<S, Either<T, A>> getOrModify,
             final Function<B, F1<S, T>> set) {
-        return new POptional<S, T, A, B>() {
+        return new POptional<>() {
             @Override
             public Either<T, A> getOrModify(final S s) {
                 return getOrModify.apply(s);

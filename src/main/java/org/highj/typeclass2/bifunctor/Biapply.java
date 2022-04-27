@@ -39,7 +39,7 @@ public interface Biapply<F> extends Bifunctor<F> {
     }
 
     default <X> Apply<__<F, X>> getApply(Semigroup<X> semigroup) {
-        return new CurriedApply<F, X>() {
+        return new CurriedApply<>() {
 
             @Override
             public Biapply<F> bi() {

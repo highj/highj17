@@ -11,7 +11,7 @@ public interface Isomorphic1<F,G> extends Injective1<F,G> {
 
     <A> __<F, A> from(__<G, A> input);
 
-    default <A> Injective<__<G,A>, __<F,A>> from() {
+    default <A> Injective<__<G, A>, __<F, A>> from() {
         return this::from;
     }
 
@@ -19,8 +19,8 @@ public interface Isomorphic1<F,G> extends Injective1<F,G> {
         return Isomorphic.of(f -> Isomorphic1.this.to(f), g -> Isomorphic1.this.from(g));
     }
 
-    default Isomorphic1<G,F> inverse() {
-        return new Isomorphic1<G, F>() {
+    default Isomorphic1<G, F> inverse() {
+        return new Isomorphic1<>() {
             @Override
             public <A> __<G, A> from(__<F, A> input) {
                 return Isomorphic1.this.to(input);
@@ -33,8 +33,8 @@ public interface Isomorphic1<F,G> extends Injective1<F,G> {
         };
     }
 
-    static <F> Isomorphic1<F,F> identity() {
-        return new Isomorphic1<F, F>() {
+    static <F> Isomorphic1<F, F> identity() {
+        return new Isomorphic1<>() {
             @Override
             public <A> __<F, A> from(__<F, A> input) {
                 return input;

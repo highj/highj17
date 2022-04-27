@@ -54,13 +54,6 @@ public class T2Test {
     }
 
     @Test
-    public void narrow() {
-        T2<String, Integer> t2 = T2.of("foo", 42);
-        __<__<T2.µ, String>, Integer> hkt = t2;
-        assertThat(asT2(hkt)).isSameAs(t2);
-    }
-
-    @Test
     public void bimap() {
         T2<String, Integer> t2 = T2.of("foo", 42);
         assertThat(t2.bimap(String::length, x -> x + 1)).isEqualTo(T2.of(3, 43));
