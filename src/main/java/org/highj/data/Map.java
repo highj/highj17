@@ -45,21 +45,18 @@ public class Map<A, B> implements __2<Map.µ, A, B>, Iterable<T2<A, B>>, Functio
         }
 
         int khc = key.hashCode();
-        switch (Ordering.compare(khc, hc)) {
-            case LT:
-                return left.apply(key);
-            case GT:
-                return right.apply(key);
-            case EQ:
+        return switch (Ordering.compare(khc, hc)) {
+            case LT -> left.apply(key);
+            case GT -> right.apply(key);
+            case EQ -> {
                 for (T2<A, B> t2 : bucket) {
                     if (key.equals(t2._1())) {
-                        return Maybe.Just(t2._2());
+                        yield  Maybe.Just(t2._2());
                     }
                 }
-                return Maybe.Nothing();
-            default:
-                throw new AssertionError();
-        }
+                yield  Maybe.Nothing();
+            }
+        };
     }
 
     public B getOrElse(A key, B defaultValue) {
@@ -75,18 +72,17 @@ public class Map<A, B> implements __2<Map.µ, A, B>, Iterable<T2<A, B>>, Functio
             return new Map<>(a.hashCode(), List.of(T2.of(a, b)), Map.empty(), Map.empty());
         }
         int ahc = a.hashCode();
-        switch (Ordering.compare(ahc, hc)) {
-            case EQ:
-                return new Map<>(hc, bucket.filter((T2<A, B> ab) -> !ab._1().equals(a)).plus(T2.of(a, b)), left, right);
-            case LT:
+        return switch (Ordering.compare(ahc, hc)) {
+            case EQ -> new Map<>(hc, bucket.filter((T2<A, B> ab) -> !ab._1().equals(a)).plus(T2.of(a, b)), left, right);
+            case LT -> {
                 Map<A, B> newLeft = left.plus(a, b);
-                return left == newLeft ? this : new Map<>(hc, bucket, newLeft, right);
-            case GT:
+                yield left == newLeft ? this : new Map<>(hc, bucket, newLeft, right);
+            }
+            case GT -> {
                 Map<A, B> newRight = right.plus(a, b);
-                return right == newRight ? this : new Map<>(hc, bucket, left, newRight);
-            default:
-                throw new AssertionError();
-        }
+                yield right == newRight ? this : new Map<>(hc, bucket, left, newRight);
+            }
+        };
     }
 
     public Map<A, B> plus(T2<A, B> ab) {

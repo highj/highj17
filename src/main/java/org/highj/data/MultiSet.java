@@ -77,18 +77,17 @@ public class MultiSet<A> implements __<MultiSet.µ, A>, Iterable<T2<A, Integer>>
             return new MultiSet<>(a.hashCode(), List.of(T2.of(a, value)), MultiSet.<A>empty(), MultiSet.<A>empty());
         }
         int ahc = a.hashCode();
-        switch (Ordering.compare(ahc, hc)) {
-            case EQ:
-                return new MultiSet<>(hc, bucketWithout(a).plus(T2.of(a, value)), left, right);
-            case LT:
+        return switch (Ordering.compare(ahc, hc)) {
+            case EQ -> new MultiSet<>(hc, bucketWithout(a).plus(T2.of(a, value)), left, right);
+            case LT -> {
                 MultiSet<A> newLeft = left.plus(a, value);
-                return left == newLeft ? this : new MultiSet<>(hc, bucket, newLeft, right);
-            case GT:
+                yield  left == newLeft ? this : new MultiSet<>(hc, bucket, newLeft, right);
+            }
+            case GT -> {
                 MultiSet<A> newRight = right.plus(a, value);
-                return right == newRight ? this : new MultiSet<>(hc, bucket, left, newRight);
-            default:
-                throw new AssertionError();
-        }
+                yield  right == newRight ? this : new MultiSet<>(hc, bucket, left, newRight);
+            }
+        };
     }
 
 
